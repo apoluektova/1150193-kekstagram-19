@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анна Полуэктова](https://up.htmlacademy.ru/javascript/19/user/1150193).
-* Наставник: `Неизвестно`.
+* Наставник: [Вадим Решетников](https://htmlacademy.ru/profile/id157287).
 
 ---
 
