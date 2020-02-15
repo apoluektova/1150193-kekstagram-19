@@ -1,8 +1,8 @@
 'use strict';
 
-var messages = ['В целом всё неплохо. Но не всё.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.'];
-var names = ['Ариадна', 'Беовульф', 'Виссарион', 'Геннадий', 'Дездемона', 'Евпатий'];
-var photosNumber = 25;
+var MESSAGES = ['В целом всё неплохо. Но не всё.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.'];
+var NAMES = ['Ариадна', 'Беовульф', 'Виссарион', 'Геннадий', 'Дездемона', 'Евпатий'];
+var PHOTOS_NUMBER = 25;
 
 // Получение случайного числа из заданного промежутка
 var getRandomInteger = function (min, max) {
@@ -12,20 +12,20 @@ var getRandomInteger = function (min, max) {
 // Создание комментариев
 var createComments = function () {
   var comments = [];
-  for (i = 0; i < getRandomInteger(1, 10); i++) {
+  for (var i = 0; i < getRandomInteger(1, 10); i++) {
     comments[i] = {
       avatar: 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
-      message: messages[Math.floor(Math.random() * messages.length)],
-      name: names[Math.floor(Math.random() * names.length)]
+      message: MESSAGES[Math.floor(Math.random() * MESSAGES.length)],
+      name: NAMES[Math.floor(Math.random() * NAMES.length)]
     };
   }
   return comments;
 };
 
 // Создание объекта из фотографии и ее описания
-var createPhotoDescription = function () {
+var createPhotoArray = function () {
   var photoDescriptions = [];
-  for (var i = 0; i < photosNumber; i++) {
+  for (var i = 0; i < PHOTOS_NUMBER; i++) {
     photoDescriptions[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'Описание фотографии',
@@ -36,7 +36,7 @@ var createPhotoDescription = function () {
   return photoDescriptions;
 };
 
-var photoArray = createPhotoDescription();
+var photoArray = createPhotoArray();
 
 // Отрисовка фотографий с описанием
 var template = document.querySelector('#picture').content.querySelector('.picture');
@@ -51,7 +51,7 @@ var renderPhotos = function (photoObject) {
 // Добавление фотографий с описанием
 var photosList = document.querySelector('.pictures');
 var fragment = document.createDocumentFragment();
-for (var i = 0; i < photosNumber; i++) {
-  fragment.appendChild(renderPhotos(photoArray[i]));
-}
+photoArray.forEach(function (item) {
+  fragment.appendChild(renderPhotos(item));
+});
 photosList.appendChild(fragment);
