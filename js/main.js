@@ -36,6 +36,7 @@ var createPhotoArray = function () {
   return photoDescriptions;
 };
 
+var commentsArray = createComments();
 var photoArray = createPhotoArray();
 
 // Отрисовка фотографий с описанием
@@ -55,3 +56,44 @@ photoArray.forEach(function (item) {
   fragment.appendChild(renderPhotos(item));
 });
 photosList.appendChild(fragment);
+
+// Отображение первой фотографии из массива в полноэкранном режиме
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+// Отрисовка одного комментария
+var commentsList = document.querySelector('.social__comments');
+var commentElement = commentsList.querySelector('.social__comment');
+var renderComments = function (commentsBlock) {
+  var commentItem = commentElement.cloneNode(true);
+  commentItem.querySelector('.social__picture').src = commentsBlock.avatar;
+  commentItem.querySelector('.social__picture').alt = commentsBlock.name;
+  commentItem.querySelector('.social__text').textContent = commentsBlock.message;
+  return commentItem;
+};
+
+// Отрисовка списка комментариев
+var commentsFragment = document.createDocumentFragment();
+commentsArray.forEach(function (item) {
+  commentsFragment.appendChild(renderComments(item));
+});
+commentsList.innerHTML = '';
+commentsList.appendChild(commentsFragment);
+
+// Отрисовка полноразмерного изображения
+var renderBigPhoto = function (bigPhoto) {
+  bigPicture.querySelector('.big-picture__img').src = bigPhoto.url;
+  bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
+  bigPicture.querySelector('.comments-count').textContent = bigPhoto.comments.length;
+  bigPicture.querySelector('.social__caption').textContent = bigPhoto.description;
+  return bigPicture;
+};
+
+renderBigPhoto(photoArray[0]);
+
+var socialCommentCount = document.querySelector('.social__comment-count');
+socialCommentCount.classList.add('hidden');
+var commentsLoader = document.querySelector('.comments-loader');
+var body = document.querySelector('body');
+body.classList.add('modal-open');
+commentsLoader.classList.add('hidden');
