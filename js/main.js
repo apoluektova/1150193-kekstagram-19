@@ -3,6 +3,11 @@
 var MESSAGES = ['В целом всё неплохо. Но не всё.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.'];
 var NAMES = ['Ариадна', 'Беовульф', 'Виссарион', 'Геннадий', 'Дездемона', 'Евпатий'];
 var PHOTOS_NUMBER = 25;
+var ESC_KEY = 'Escape';
+var RADIX = 10;
+var SCALE_STEP = 25;
+var MIN_SCALE_VALUE = 25;
+var MAX_SCALE_VALUE = 100;
 
 // Получение случайного числа из заданного промежутка
 var getRandomInteger = function (min, max) {
@@ -55,3 +60,104 @@ photoArray.forEach(function (item) {
   fragment.appendChild(renderPhotos(item));
 });
 photosList.appendChild(fragment);
+
+
+var uploadFileInput = document.querySelector('#upload-file');
+var editImageForm = document.querySelector('.img-upload__overlay');
+var editImageFormClose = editImageForm.querySelector('#upload-cancel');
+var body = document.querySelector('body');
+
+// Функция закрытия окна по Escape
+var onPopupEscPress = function (evt) {
+  if (evt.key === ESC_KEY) {
+    editImageForm.classList.add('hidden');
+  }
+};
+
+// Функция открытия любого окна
+var openPopup = function (popup) {
+  popup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function (popup) {
+  popup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+// Функция открытия окна редактирования
+var onUploadFileChange = function () {
+  openPopup(editImageForm);
+  body.classList.add('modal-open');
+};
+
+// Функция закрытия окна редактирования
+var onUploadCancelClick = function () {
+  closePopup(editImageForm);
+  body.classList.remove('modal-open');
+  uploadFileInput = '';
+};
+
+uploadFileInput.addEventListener('change', onUploadFileChange);
+editImageFormClose.addEventListener('click', onUploadCancelClick);
+
+// Баг - если закрываю окно редактирования по ESC, а потом открываю заново и выбираю ту же фотографию - окно не открывается - то есть событие change не срабатывает после ESC
+
+// Редактирование размера изображения
+var scaleMinus = editImageForm.querySelector('.scale__control--smaller');
+var scalePlus = editImageForm.querySelector('.scale__control--bigger');
+var scaleValue = editImageForm.querySelector('.scale__control--value');
+var imagePreview = editImageForm.querySelector('.img-upload__preview');
+var image = imagePreview.querySelector('img');
+
+// Преобразование значения масштаба
+var getValue = function () {
+  var value = parseInt(scaleValue.value, RADIX);
+  return value;
+};
+
+// Уменьшение масштаба
+var decreaseScaleValue = function () {
+  if (getValue() > MIN_SCALE_VALUE && (getValue() - SCALE_STEP) > MIN_SCALE_VALUE) {
+    scaleValue.value = (getValue() - SCALE_STEP) + '%';
+  } else {
+    scaleValue.value = MIN_SCALE_VALUE + '%';
+  }
+};
+
+// Увеличение масштаба
+var increaseScaleValue = function () {
+  if (getValue() < MAX_SCALE_VALUE && (getValue() + SCALE_STEP) < MAX_SCALE_VALUE) {
+    scaleValue.value = (getValue() + SCALE_STEP) + '%';
+  } else {
+    scaleValue.value = MAX_SCALE_VALUE + '%';
+  }
+};
+
+// Масштабирование изображения
+var scaleImage = function (scaleRatio) {
+  imagePreview.style.transform = 'scale(' + (parseInt(scaleRatio.value, RADIX) / 100) + ');';
+};
+
+var onScaleMinusClick = function () {
+  decreaseScaleValue();
+  scaleImage(scaleValue.value);
+};
+
+var onScalePlusClick = function () {
+  increaseScaleValue();
+  scaleImage(scaleValue.value);
+};
+
+scaleMinus.addEventListener('click', onScaleMinusClick);
+scalePlus.addEventListener('click', onScalePlusClick);
+
+// Переключение фильтров
+var form = document.querySelector('form');
+var onEffectChange = function (evt) {
+  if (evt.target && evt.target.matches('.effects__radio')) {
+    image.classList.add('effects__preview--chrome');
+  }
+};
+
+form.addEventListener('change', onEffectChange);
