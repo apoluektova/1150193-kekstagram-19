@@ -8,6 +8,7 @@ var RADIX = 10;
 var SCALE_STEP = 25;
 var MIN_SCALE_VALUE = 25;
 var MAX_SCALE_VALUE = 100;
+var DEFAULT_SCALE_VALUE = '100%';
 
 // Получение случайного числа из заданного промежутка
 var getRandomInteger = function (min, max) {
@@ -135,29 +136,54 @@ var increaseScaleValue = function () {
 };
 
 // Масштабирование изображения
-var scaleImage = function (scaleRatio) {
-  imagePreview.style.transform = 'scale(' + (parseInt(scaleRatio.value, RADIX) / 100) + ');';
+var scaleImage = function () {
+  image.style.transform = 'scale(' + (parseInt(scaleValue.value, RADIX) / 100) + ')';
 };
 
 var onScaleMinusClick = function () {
   decreaseScaleValue();
-  scaleImage(scaleValue.value);
+  scaleImage();
 };
 
 var onScalePlusClick = function () {
   increaseScaleValue();
-  scaleImage(scaleValue.value);
+  scaleImage();
 };
+
+scaleValue.value = DEFAULT_SCALE_VALUE;
 
 scaleMinus.addEventListener('click', onScaleMinusClick);
 scalePlus.addEventListener('click', onScalePlusClick);
 
+// Скрытие слайдера
+var slider = document.querySelector('.effect-level');
+var hideSlider = function () {
+  slider.classList.add('hidden');
+};
+
+// Сброс текущего эффекта
+/* var resetCurrentEffect = function () {
+  var emptyClass = '';
+  image.classList.add(emptyClass);
+}; */
+
 // Переключение фильтров
-var form = document.querySelector('form');
+var effectField = document.querySelector('.effects');
 var onEffectChange = function (evt) {
-  if (evt.target && evt.target.matches('.effects__radio')) {
+  if (evt.target && evt.target.matches('#effect-none')) {
+    hideSlider();
+    image.classList.add('effects__preview--none');
+  } else if (evt.target && evt.target.matches('#effect-chrome')) {
     image.classList.add('effects__preview--chrome');
+  } else if (evt.target && evt.target.matches('#effect-sepia')) {
+    image.classList.add('effects__preview--sepia');
+  } else if (evt.target && evt.target.matches('#effect-marvin')) {
+    image.classList.add('effects__preview--marvin');
+  } else if (evt.target && evt.target.matches('#effect-phobos')) {
+    image.classList.add('effects__preview--phobos');
+  } else if (evt.target && evt.target.matches('#effect-heat')) {
+    image.classList.add('effects__preview--heat');
   }
 };
 
-form.addEventListener('change', onEffectChange);
+effectField.addEventListener('click', onEffectChange);
