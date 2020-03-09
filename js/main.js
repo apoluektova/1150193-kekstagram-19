@@ -9,6 +9,9 @@ var SCALE_STEP = 25;
 var MIN_SCALE_VALUE = 25;
 var MAX_SCALE_VALUE = 100;
 var DEFAULT_SCALE_VALUE = '100%';
+var REGULAR = /^#(?=.*[^0-9])[a-zа-яё0-9]{1,19}$/g;
+var MAX_HASHTAG_LENGTH = 20;
+var MAX_HASHTAGS_NUMBER = 5;
 
 // Получение случайного числа из заданного промежутка
 var getRandomInteger = function (min, max) {
@@ -161,29 +164,106 @@ var hideSlider = function () {
   slider.classList.add('hidden');
 };
 
-// Сброс текущего эффекта
-/* var resetCurrentEffect = function () {
-  var emptyClass = '';
-  image.classList.add(emptyClass);
-}; */
+// Обрезка строки с айди эффекта до подстроки с названием эффекта
+var getSubString = function (string) {
+  var subString = string.substring(string.lastIndexOf('-') + 1);
+  return subString;
+};
 
-// Переключение фильтров
-var effectField = document.querySelector('.effects');
+// Добавление эффекта на фото
+var applyEffect = function (element) {
+  var effectId = element.id;
+  var effectName = getSubString(effectId);
+  image.classList = '';
+  image.classList.add('effects__preview--' + effectName);
+};
+
 var onEffectChange = function (evt) {
-  if (evt.target && evt.target.matches('#effect-none')) {
+  applyEffect(evt.target);
+  if (evt.target.id === 'effect-none') {
     hideSlider();
-    image.classList.add('effects__preview--none');
-  } else if (evt.target && evt.target.matches('#effect-chrome')) {
-    image.classList.add('effects__preview--chrome');
-  } else if (evt.target && evt.target.matches('#effect-sepia')) {
-    image.classList.add('effects__preview--sepia');
-  } else if (evt.target && evt.target.matches('#effect-marvin')) {
-    image.classList.add('effects__preview--marvin');
-  } else if (evt.target && evt.target.matches('#effect-phobos')) {
-    image.classList.add('effects__preview--phobos');
-  } else if (evt.target && evt.target.matches('#effect-heat')) {
-    image.classList.add('effects__preview--heat');
   }
 };
 
+// Переключение фильтров
+var effectField = document.querySelector('.effects');
 effectField.addEventListener('click', onEffectChange);
+
+// Изменение интенсивности эффекта с помощью слайдера
+var effectPin = slider.querySelector('.effect-level__pin');
+// var effectValue = slider.querySelector('.effect-level__value');
+var effectLine = slider.querySelector('.effect-level__line');
+var effectDepth = slider.querySelector('.effect-level__depth');
+
+effectPin.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoordX = evt.clientX;
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shiftX = startCoordX - moveEvt.clientX;
+    startCoordX = moveEvt.clientX;
+
+    var endPinX = (effectPin.offsetLeft - shiftX);
+    if (endPinX >= 0 && endPinX <= effectLine.offsetWidth) {
+      effectPin.style.left = endPinX + 'px';
+      effectDepth.style.width = endPinX + 'px';
+    }
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+});
+
+// Валидация
+var hashtagInput = document.querySelector('.text__hashtags');
+var hashtagString = hashtagInput.value.toLowerCase();
+
+var getArrayFromString = function (stringToSplit, separator) {
+  return stringToSplit.split(separator);
+};
+
+var hashtagsArray = getArrayFromString(hashtagString, ' ');
+
+/* var createErrorMessage = function (message) {
+  var errorMessages = [];
+  errorMessage.push(message);
+  return errorMessages;
+}; */
+
+var checkHashtagValidity = function () {
+  var errorMessagesArray = [];
+  for (var i = 0; i < hashtagsArray.length; i++) {
+    var hashtag = hashtagsArray[i];
+    if (hashtag[0] !== '#') {
+      errorMessagesArray.push('Хэш-тег должен начинаться с символа # (решетка)');
+    } else if (!REGULAR.test(hashtag[i])) {
+      errorMessagesArray.push('Хэш-тег должен состоять только из букв и цифр');
+    } else if (hashtag.length === 1) {
+      errorMessagesArray.push('Хэш-тег не может состоять из одного символа');
+    } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
+      errorMessagesArray.push('Хэш-тег не может состоять более чем из' + MAX_HASHTAG_LENGTH + 'символов');
+    } else if (!hashtag === hashtagsArray.indexOf(hashtag)) {
+      errorMessagesArray.push('Один и тот же хэш-тег не может быть исползован дважды');
+    } else if (hashtagsArray.length > MAX_HASHTAGS_NUMBER) {
+      errorMessagesArray.push('Нельзя указывать более' + MAX_HASHTAGS_NUMBER + 'хэш-тегов');
+    }
+  }
+  return errorMessagesArray;
+};
+
+var onHashtagInput = function () {
+  var errors = checkHashtagValidity();
+  hashtagInput.setCustomValidity(errors);
+};
+
+hashtagInput.addEventListener('change', onHashtagInput);
