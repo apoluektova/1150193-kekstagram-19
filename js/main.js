@@ -228,11 +228,7 @@ effectPin.addEventListener('mousedown', function (evt) {
 var hashtagInput = document.querySelector('.text__hashtags');
 var hashtagString = hashtagInput.value.toLowerCase();
 
-var getArrayFromString = function (stringToSplit, separator) {
-  return stringToSplit.split(separator);
-};
-
-var hashtagsArray = getArrayFromString(hashtagString, ' ');
+var hashtagsArray = hashtagString.split(' ');
 
 /* var createErrorMessage = function (message) {
   var errorMessages = [];
