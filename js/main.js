@@ -4,6 +4,7 @@ var MESSAGES = ['В целом всё неплохо. Но не всё.', 'Мо�
 var NAMES = ['Ариадна', 'Беовульф', 'Виссарион', 'Геннадий', 'Дездемона', 'Евпатий'];
 var PHOTOS_NUMBER = 25;
 var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
 var RADIX = 10;
 var SCALE_STEP = 25;
 var MIN_SCALE_VALUE = 25;
@@ -39,7 +40,8 @@ var createPhotoArray = function () {
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'Описание фотографии',
       likes: getRandomInteger(15, 200),
-      comments: createComments()
+      comments: createComments(),
+      number: i
     };
   }
   return photoDescriptions;
@@ -55,6 +57,7 @@ var renderPhotos = function (photoObject) {
   photoItem.querySelector('.picture__img').src = photoObject.url;
   photoItem.querySelector('.picture__likes').textContent = photoObject.likes;
   photoItem.querySelector('.picture__comments').textContent = photoObject.comments.length;
+  photoItem.setAttribute('data-number', photoObject.number);
   return photoItem;
 };
 
@@ -65,10 +68,6 @@ photoArray.forEach(function (item) {
   fragment.appendChild(renderPhotos(item));
 });
 photosList.appendChild(fragment);
-
-// Отображение первой фотографии из массива в полноэкранном режиме
-var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
 
 // Отрисовка одного комментария
 var commentsList = document.querySelector('.social__comments');
@@ -89,23 +88,65 @@ commentsArray.forEach(function (item) {
 commentsList.innerHTML = '';
 commentsList.appendChild(commentsFragment);
 
+// Отображение первой фотографии из массива в полноэкранном режиме
+var bigPicture = document.querySelector('.big-picture');
+var bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
+var bigPictureImage = bigPicture.querySelector('img');
+var socialCommentCount = document.querySelector('.social__comment-count');
+var commentsLoader = document.querySelector('.comments-loader');
+var body = document.querySelector('body');
+
 // Отрисовка полноразмерного изображения
 var renderBigPhoto = function (bigPhoto) {
-  bigPicture.querySelector('.big-picture__img').src = bigPhoto.url;
+  openPopup(bigPicture);
+  body.classList.add('modal-open');
+  socialCommentCount.classList.add('hidden');
+  commentsLoader.classList.add('hidden');
+  bigPictureImage.src = bigPhoto.url;
   bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
   bigPicture.querySelector('.comments-count').textContent = bigPhoto.comments.length;
   bigPicture.querySelector('.social__caption').textContent = bigPhoto.description;
   return bigPicture;
 };
 
-renderBigPhoto(photoArray[0]);
+// Функция закрытия окна полноразмерного изображения по Escape
+var onBigPictureEscPress = function (evt) {
+  if (evt.key === ESC_KEY) {
+    bigPicture.classList.add('hidden');
+  }
+};
 
-var socialCommentCount = document.querySelector('.social__comment-count');
-socialCommentCount.classList.add('hidden');
-var commentsLoader = document.querySelector('.comments-loader');
-var body = document.querySelector('body');
-body.classList.add('modal-open');
-commentsLoader.classList.add('hidden');
+// Обработчик клика по списку фотографий
+var onBigPictureOpenClick = function (evt) {
+  if (evt.target.parentNode.classList.contains('picture')) {
+    var pictureNumber = evt.target.parentNode.getAttribute('data-number');
+    renderBigPhoto(photoArray[pictureNumber]);
+  }
+  document.addEventListener('keydown', onBigPictureEscPress);
+};
+
+photosList.addEventListener('click', onBigPictureOpenClick);
+
+// Обработчик нажатия по Enter на фотографию
+var onBigPictureOpenEnter = function (evt) {
+  var focusedPicture = document.activeElement.classList.contains('picture');
+  if (evt.key === ENTER_KEY && focusedPicture) {
+    var pictureNumber = document.activeElement.getAttribute('data-number');
+    renderBigPhoto(photoArray[pictureNumber]);
+  }
+  document.addEventListener('keydown', onBigPictureEscPress);
+};
+
+photosList.addEventListener('keydown', onBigPictureOpenEnter);
+
+// Обработчик закрытия окна полноразмерного изображения
+var onBigPictureCancelClick = function () {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onBigPictureEscPress);
+};
+
+bigPictureClose.addEventListener('click', onBigPictureCancelClick);
 
 var uploadFileInput = document.querySelector('#upload-file');
 var editImageForm = document.querySelector('.img-upload__overlay');
@@ -124,6 +165,7 @@ var openPopup = function (popup) {
   document.addEventListener('keydown', onPopupEscPress);
 };
 
+// Функция закрытия любого окна
 var closePopup = function (popup) {
   popup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
