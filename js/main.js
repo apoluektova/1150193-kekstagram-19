@@ -309,68 +309,6 @@ effectPin.addEventListener('mousedown', function (evt) {
 // Валидация
 var hashtagInput = document.querySelector('.text__hashtags');
 
-/* var createErrorMessage = function (message) {
-  var errorMessages = [];
-  errorMessage.push(message);
-  return errorMessages;
-}; */
-
-/* var checkHashtagValidity = function () {
-  var hashtagString = hashtagInput.value.toLowerCase();
-  var hashtagsArray = hashtagString.split(' ');
-  var errorMessagesArray = [];
-  for (var i = 0; i < hashtagsArray.length; i++) {
-    var hashtag = hashtagsArray[i];
-    if (hashtag[0] !== '#') {
-      errorMessagesArray.push('Хэш-тег должен начинаться с символа # (решетка)');
-    } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
-      errorMessagesArray.push('Хэш-тег не может состоять более чем из ' + MAX_HASHTAG_LENGTH + ' символов');
-    } else if (hashtag.length === 1) {
-      errorMessagesArray.push('Хэш-тег не может состоять из одного символа');
-    } else if (!hashtag.match(REGULAR)) {
-      errorMessagesArray.push('Хэш-тег должен состоять только из букв и цифр');
-    } else if (i !== hashtagsArray.indexOf(hashtag)) {
-      errorMessagesArray.push('Один и тот же хэш-тег не может быть исползован дважды');
-    } else if (hashtagsArray.length > MAX_HASHTAGS_NUMBER) {
-      errorMessagesArray.push('Нельзя указывать более ' + MAX_HASHTAGS_NUMBER + ' хэш-тегов');
-    }
-  }
-  return errorMessagesArray;
-}; */
-
-/* var checkHashtagValidity = function () {
-  var hashtagString = hashtagInput.value.toLowerCase();
-  var hashtagsArray = hashtagString.split(' ');
-
-  var validityMessages = {
-    hashMissing: 'Хэш-тег должен начинаться с символа # (решетка). ',
-    hashtagTooLong: 'Хэш-тег не может состоять более чем из ' + MAX_HASHTAG_LENGTH + ' символов. ',
-    hashtagTooShort: 'Хэш-тег не может состоять из одного символа. ',
-    regularMismatch: 'Хэш-тег должен состоять только из букв и цифр. ',
-    hashtagDuplicated: 'Один и тот же хэш-тег не может быть исползован дважды. ',
-    tooManyHashtags: 'Нельзя указывать более ' + MAX_HASHTAGS_NUMBER + ' хэш-тегов. '
-  };
-
-  var finalMessage = {};
-
-  for (var i = 0; i < hashtagsArray.length; i++) {
-    var hashtag = hashtagsArray[i];
-    if (hashtag[0] !== '#') {
-      finalMessage.hashMissing = validityMessages.hashMissing;
-    } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
-      finalMessage.hashTooLong = validityMessages.hashtagTooLong;
-    } else if (hashtag.length === 1) {
-      finalMessage.hashTooShort = validityMessages.hashtagTooShort;
-    } else if (!hashtag.match(REGULAR)) {
-      finalMessage.regularMismatch = validityMessages.regularMismatch;
-    } else if (i !== hashtagsArray.indexOf(hashtag)) {
-      finalMessage.hashtagDuplicated = validityMessages.hashtagDuplicated;
-    } else if (hashtagsArray.length > MAX_HASHTAGS_NUMBER) {
-      finalMessage.tooManyHashtags = validityMessages.tooManyHashtags;
-    }
-  }
-  return Object.keys(finalMessage);
-}; */
 var hashtagRules = [
   {
     check: function (string) {
@@ -424,9 +362,7 @@ var hashtagArrayRules = [
 
 var getErrorMessage = function () {
   var hashtagString = hashtagInput.value.toLowerCase();
-  var hashtagsArray = hashtagString.split(' ');
-
-  console.log(hashtagsArray)
+  var hashtagsArray = hashtagString.trim().split(' ');
 
   var failedArrayRules = hashtagArrayRules.filter(function (rule) {
     return rule.check(hashtagsArray);
