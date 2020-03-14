@@ -372,25 +372,25 @@ var hashtagInput = document.querySelector('.text__hashtags');
   return Object.keys(finalMessage);
 }; */
 var hashtagRules = [
-  {show: false,
+  {
     check: function (string) {
       return !string.startsWith('#');
     },
     message: 'Хэш-тег должен начинаться с символа # (решетка). '
   },
-  {show: false,
+  {
     check: function (string) {
       return string.length > MAX_HASHTAG_LENGTH;
     },
     message: 'Хэш-тег не может состоять более чем из ' + MAX_HASHTAG_LENGTH + ' символов. '
   },
-  {show: false,
+  {
     check: function (string) {
       return string.length === 1;
     },
     message: 'Хэш-тег не может состоять из одного символа. '
   },
-  {show: false,
+  {
     check: function (string) {
       return !REGULAR.test(string);
     },
@@ -399,7 +399,7 @@ var hashtagRules = [
 ];
 
 var hashtagArrayRules = [
-  {show: false,
+  {
     check: function (array) {
       var duplicates = {};
       var duplicateExists = false;
@@ -414,61 +414,35 @@ var hashtagArrayRules = [
     },
     message: 'Один и тот же хэш-тег не может быть исползован дважды. '
   },
-  {show: false,
+  {
     check: function (array) {
       return array.length > MAX_HASHTAGS_NUMBER;
     },
-    messaage: 'Нельзя указывать более ' + MAX_HASHTAGS_NUMBER + ' хэш-тегов. '
+    message: 'Нельзя указывать более ' + MAX_HASHTAGS_NUMBER + ' хэш-тегов. '
   }
 ];
 
-var checkHashtagArray = function () {
-  var hashtagString = hashtagInput.value.toLowerCase();
-  var hashtagsArray = hashtagString.split(' ');
-
-  for (var i = 0; i < hashtagArrayRules.length; i++) {
-    if (!hashtagArrayRules.show) {
-      hashtagArrayRules[i].show = hashtagArrayRules[i].check(hashtagsArray);
-    }
-  }
-  return hashtagArrayRules;
-};
-
-var checkHashtagValidity = function () {
-
-  var hashtagString = hashtagInput.value.toLowerCase();
-  var hashtagsArray = hashtagString.split(' ');
-
-  hashtagsArray.forEach(function (tag) {
-    for (var i = 0; i < hashtagRules.length; i++) {
-      if (!hashtagRules[i].show) {
-        hashtagRules[i].show = hashtagRules[i].check(tag);
-      }
-    }
-  });
-  return hashtagRules;
-};
-
-var getArrayErrorMessage = function () {
-  checkHashtagArray();
-  var arrayErrorMessage = '';
-  for (var i = 0; i < hashtagArrayRules; i++) {
-    if (!hashtagArrayRules[i].show) {
-      arrayErrorMessage += hashtagArrayRules[i].message;
-    }
-  }
-  return arrayErrorMessage;
-};
-
 var getErrorMessage = function () {
-  checkHashtagValidity();
-  var errorMessage = getArrayErrorMessage();
-  for (var i = 0; i < hashtagRules.length; i++) {
-    if (hashtagRules[i].show) {
-      errorMessage += hashtagRules[i].message;
-    }
-  }
-  return errorMessage;
+  var hashtagString = hashtagInput.value.toLowerCase();
+  var hashtagsArray = hashtagString.split(' ');
+
+  console.log(hashtagsArray)
+
+  var failedArrayRules = hashtagArrayRules.filter(function (rule) {
+    return rule.check(hashtagsArray);
+  });
+  var failedTagRules = hashtagRules.filter(function (rule) {
+    return hashtagsArray.some(function (tag) {
+      return rule.check(tag);
+    });
+  });
+
+  return failedArrayRules
+    .concat(failedTagRules)
+    .map(function (rule) {
+      return rule.message;
+    })
+    .join(' ');
 };
 
 
