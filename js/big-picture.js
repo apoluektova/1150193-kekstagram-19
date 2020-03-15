@@ -15,7 +15,6 @@
   var photosList = window.gallery.photosList;
   var openPopup = window.util.openPopup;
   var ENTER_KEY = window.util.ENTER_KEY;
-  var ESC_KEY = window.util.ESC_KEY;
   var onPopupEscPress = window.util.onPopupEscPress;
 
   // Отрисовка одного комментария
