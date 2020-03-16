@@ -11,7 +11,7 @@
   var body = window.bigPicture.body;
   var hashtagInput = window.validation.hashtagInput;
   var commentInput = window.validation.commentInput;
-  var image = window.effect.image;
+  var image = window.util.image;
   var originalEffect = editImageForm.querySelector('[value="none"]');
 
   // Функция закрытия окна редактирования по Escape
@@ -27,7 +27,6 @@
     openPopup(editImageForm);
     document.addEventListener('keydown', onEditImageFormEscPress);
     body.classList.add('modal-open');
-    window.slider.hideSlider();
   };
 
   // Функция закрытия окна редактирования

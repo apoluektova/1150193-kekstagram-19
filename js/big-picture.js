@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ENTER_KEY = window.util.ENTER_KEY;
   var bigPicture = document.querySelector('.big-picture');
   var bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
   var bigPictureImage = bigPicture.querySelector('img');
@@ -14,7 +15,6 @@
   var commentsArray = window.data.commentsArray;
   var photosList = window.gallery.photosList;
   var openPopup = window.util.openPopup;
-  var ENTER_KEY = window.util.ENTER_KEY;
   var onPopupEscPress = window.util.onPopupEscPress;
 
   // Отрисовка одного комментария
@@ -27,11 +27,15 @@
   };
 
   // Отрисовка списка комментариев
-  commentsArray.forEach(function (item) {
-    commentsFragment.appendChild(renderComments(item));
-  });
-  commentsList.innerHTML = '';
-  commentsList.appendChild(commentsFragment);
+  var createCommentsFragment = function () {
+    commentsArray.forEach(function (item) {
+      commentsFragment.appendChild(renderComments(item));
+    });
+    commentsList.innerHTML = '';
+    commentsList.appendChild(commentsFragment);
+  };
+
+  createCommentsFragment();
 
   // Отрисовка полноразмерного изображения
   var renderBigPhoto = function (bigPhoto) {
@@ -67,7 +71,6 @@
     document.addEventListener('keydown', onBigPictureEscPress);
   };
 
-  photosList.addEventListener('click', onBigPictureOpenClick);
 
   // Обработчик нажатия по Enter на фотографию
   var onBigPictureOpenEnter = function (evt) {
@@ -79,6 +82,7 @@
     document.addEventListener('keydown', onBigPictureEscPress);
   };
 
+  photosList.addEventListener('click', onBigPictureOpenClick);
   photosList.addEventListener('keydown', onBigPictureOpenEnter);
   bigPictureClose.addEventListener('click', onBigPictureCancelClick);
 

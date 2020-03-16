@@ -6,10 +6,10 @@
   var MIN_SCALE_VALUE = 25;
   var MAX_SCALE_VALUE = 100;
   var DEFAULT_SCALE_VALUE = '100%';
-  var scaleMinus = window.effect.editImageForm.querySelector('.scale__control--smaller');
-  var scalePlus = window.effect.editImageForm.querySelector('.scale__control--bigger');
-  var scaleValue = window.effect.editImageForm.querySelector('.scale__control--value');
-  var image = window.effect.image;
+  var scaleMinus = window.util.editImageForm.querySelector('.scale__control--smaller');
+  var scalePlus = window.util.editImageForm.querySelector('.scale__control--bigger');
+  var scaleValue = window.util.editImageForm.querySelector('.scale__control--value');
+  var image = window.util.image;
 
   // Преобразование значения масштаба
   var getValue = function () {

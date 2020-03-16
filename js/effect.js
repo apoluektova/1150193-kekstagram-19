@@ -1,9 +1,8 @@
 'use strict';
 
 (function () {
-  var editImageForm = document.querySelector('.img-upload__overlay');
-  var imagePreview = editImageForm.querySelector('.img-upload__preview');
-  var image = imagePreview.querySelector('img');
+  var editImageForm = window.util.editImageForm;
+  var image = window.util.image;
   var effectField = document.querySelector('.effects');
   var hideSlider = window.slider.hideSlider;
 
@@ -33,6 +32,7 @@
 
   window.effect = {
     editImageForm: editImageForm,
-    image: image
+    image: image,
+    getSubString: getSubString
   };
 })();

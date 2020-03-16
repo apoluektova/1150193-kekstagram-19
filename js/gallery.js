@@ -17,10 +17,14 @@
   };
 
   // Добавление фотографий с описанием
-  photoArray.forEach(function (item) {
-    fragment.appendChild(renderPhotos(item));
-  });
-  photosList.appendChild(fragment);
+  var createPhotosFragment = function () {
+    photoArray.forEach(function (item) {
+      fragment.appendChild(renderPhotos(item));
+    });
+    photosList.appendChild(fragment);
+  };
+
+  createPhotosFragment();
 
   window.gallery = {
     photosList: photosList
