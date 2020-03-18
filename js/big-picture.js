@@ -35,8 +35,6 @@
     commentsList.appendChild(commentsFragment);
   };
 
-  createCommentsFragment();
-
   // Отрисовка полноразмерного изображения
   var renderBigPhoto = function (bigPhoto) {
     openPopup(bigPicture);
@@ -71,7 +69,6 @@
     document.addEventListener('keydown', onBigPictureEscPress);
   };
 
-
   // Обработчик нажатия по Enter на фотографию
   var onBigPictureOpenEnter = function (evt) {
     var focusedPicture = document.activeElement.classList.contains('picture');
@@ -82,6 +79,7 @@
     document.addEventListener('keydown', onBigPictureEscPress);
   };
 
+  createCommentsFragment();
   photosList.addEventListener('click', onBigPictureOpenClick);
   photosList.addEventListener('keydown', onBigPictureOpenEnter);
   bigPictureClose.addEventListener('click', onBigPictureCancelClick);
