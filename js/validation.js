@@ -79,12 +79,23 @@
       .join(' ');
   };
 
+  var checkComment = function () {
+    if (!commentInput.maxlength) {
+      commentInput.setCustomValidity('Длина комментария не может составлять больше 140 символов');
+    }
+  };
+
   var onHashtagInput = function () {
     var errors = getErrorMessage();
     hashtagInput.setCustomValidity(errors);
   };
 
+  var onCommentInput = function () {
+    checkComment();
+  };
+
   hashtagInput.addEventListener('input', onHashtagInput);
+  commentInput.addEventListener('input', onCommentInput);
 
   window.validation = {
     hashtagInput: hashtagInput,

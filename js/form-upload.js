@@ -2,8 +2,9 @@
 'use strict';
 
 (function () {
-  var editImageForm = window.effect.editImageForm;
-  var editImageFormClose = editImageForm.querySelector('#upload-cancel');
+  var editImageOverlay = window.util.editImageOverlay;
+  var uploadForm = document.querySelector('.img-upload__form');
+  var editImageOverlayClose = editImageOverlay.querySelector('#upload-cancel');
   var uploadFileInput = document.querySelector('#upload-file');
   var openPopup = window.util.openPopup;
   var closePopup = window.util.closePopup;
@@ -11,8 +12,6 @@
   var body = window.bigPicture.body;
   var hashtagInput = window.validation.hashtagInput;
   var commentInput = window.validation.commentInput;
-  var image = window.util.image;
-  var originalEffect = editImageForm.querySelector('[value="none"]');
   var hideSlider = window.slider.hide;
   var removeEffect = window.effect.remove;
   var setDefaultValues = window.slider.setDefault;
@@ -20,16 +19,16 @@
   var removeEffectListeners = window.effect.removeListeners;
 
   // Функция закрытия окна редактирования по Escape
-  var onEditImageFormEscPress = function (evt) {
+  var onEditImageOverlayEscPress = function (evt) {
     var active = document.activeElement;
     if (hashtagInput !== active && commentInput !== active) {
-      onPopupEscPress(evt, onEditImageFormClose);
+      onPopupEscPress(evt, onEditImageOverlayClose);
     }
   };
 
   // Функция открытия окна редактирования
-  var onEditImageFormOpen = function () {
-    openPopup(editImageForm);
+  var onEditImageOverlayOpen = function () {
+    openPopup(editImageOverlay);
     body.classList.add('modal-open');
 
     window.scale.controlValue.value = window.scale.DEFAULT_VALUE;
@@ -38,19 +37,19 @@
     setDefaultValues();
     setEffectListeners();
 
-    editImageFormClose.addEventListener('click', onEditImageFormClose);
-    document.addEventListener('keydown', onEditImageFormEscPress);
+    editImageOverlayClose.addEventListener('click', onEditImageOverlayClose);
+    document.addEventListener('keydown', onEditImageOverlayEscPress);
   };
 
   // Функция закрытия окна редактирования
-  var onEditImageFormClose = function () {
-    closePopup(editImageForm);
+  var onEditImageOverlayClose = function () {
+    closePopup(editImageOverlay);
     body.classList.remove('modal-open');
     removeEffectListeners();
-    editImageForm.reset();
-    editImageFormClose.removeEventListener('click', onEditImageFormClose);
-    document.removeEventListener('keydown', onEditImageFormEscPress);
+    uploadForm.reset();
+    editImageOverlayClose.removeEventListener('click', onEditImageOverlayClose);
+    document.removeEventListener('keydown', onEditImageOverlayEscPress);
   };
 
-  uploadFileInput.addEventListener('change', onEditImageFormOpen);
+  uploadFileInput.addEventListener('change', onEditImageOverlayOpen);
 }());

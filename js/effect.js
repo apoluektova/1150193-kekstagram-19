@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var editImageForm = window.util.editImageForm;
   var image = window.util.image;
   var effectField = document.querySelector('.effects');
   var hideSlider = window.slider.hide;
@@ -36,12 +35,12 @@
     }
   };
 
+  // Переключение фильтров
   var onEffectChange = function (evt) {
     removeEffect();
     applyEffect(evt.target);
   };
 
-  // Переключение фильтров
   var setEffectListeners = function () {
     effectField.addEventListener('click', onEffectChange);
   };
@@ -51,7 +50,6 @@
   };
 
   window.effect = {
-    editImageForm: editImageForm,
     image: image,
     getSubString: getSubString,
     remove: removeEffect,
