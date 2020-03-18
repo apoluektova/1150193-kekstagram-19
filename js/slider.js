@@ -48,6 +48,10 @@
     slider.classList.add('hidden');
   };
 
+  var showSlider = function () {
+    slider.classList.remove('hidden');
+  };
+
   // Выбор нужного эффекта (который соответствует классу изображения) и его параметров
   var findCurrentEffect = function () {
     var currentImageClass = image.className;
@@ -57,7 +61,7 @@
 
   // Вычисление глубины эффекта
   var getEffectDepth = function (pinValue) {
-    var currentEffect = findCurrentEffect;
+    var currentEffect = findCurrentEffect();
     var proportionValue = pinValue / MAX_PERCENT_VALUE;
     var effectDepthLevel = proportionValue * (effects[currentEffect].maxValue - effects[currentEffect].minValue) + effects[currentEffect].minValue;
     return effectDepthLevel;
@@ -67,6 +71,7 @@
   var applyEffectDepth = function (pinValue) {
     var currentEffect = findCurrentEffect();
     var appliedFilter = effects[currentEffect];
+    console.log({ currentEffect, appliedFilter });
     image.style.filter = appliedFilter.filter + '(' + getEffectDepth(pinValue) + appliedFilter.units + ')';
   };
 
@@ -103,7 +108,10 @@
     window.addEventListener('mouseup', onMouseUp);
   });
 
+  hideSlider();
+
   window.slider = {
-    hideSlider: hideSlider
+    hide: hideSlider,
+    show: showSlider
   };
 }());
