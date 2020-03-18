@@ -6,10 +6,10 @@
   var MIN_SCALE_VALUE = 25;
   var MAX_SCALE_VALUE = 100;
   var DEFAULT_SCALE_VALUE = '100%';
-  var scaleMinus = window.effect.editImageForm.querySelector('.scale__control--smaller');
-  var scalePlus = window.effect.editImageForm.querySelector('.scale__control--bigger');
-  var scaleValue = window.effect.editImageForm.querySelector('.scale__control--value');
-  var image = window.effect.image;
+  var scaleMinus = window.util.editImageOverlay.querySelector('.scale__control--smaller');
+  var scalePlus = window.util.editImageOverlay.querySelector('.scale__control--bigger');
+  var scaleValue = window.util.editImageOverlay.querySelector('.scale__control--value');
+  var image = window.util.image;
 
   // Преобразование значения масштаба
   var getValue = function () {
@@ -50,13 +50,11 @@
     scaleImage();
   };
 
-  scaleValue.value = DEFAULT_SCALE_VALUE;
-
   scaleMinus.addEventListener('click', onScaleMinusClick);
   scalePlus.addEventListener('click', onScalePlusClick);
 
   window.scale = {
-    scaleValue: scaleValue,
-    DEFAULT_SCALE_VALUE: DEFAULT_SCALE_VALUE
+    controlValue: scaleValue,
+    DEFAULT_VALUE: DEFAULT_SCALE_VALUE
   };
 })();

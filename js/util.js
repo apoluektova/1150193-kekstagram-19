@@ -3,6 +3,9 @@
 (function () {
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
+  var editImageOverlay = document.querySelector('.img-upload__overlay');
+  var imagePreview = editImageOverlay.querySelector('.img-upload__preview');
+  var image = imagePreview.querySelector('img');
 
   // Получение случайного числа из заданного промежутка
   var getRandomInteger = function (min, max) {
@@ -34,6 +37,9 @@
     getRandomInteger: getRandomInteger,
     onPopupEscPress: onPopupEscPress,
     openPopup: openPopup,
-    closePopup: closePopup
+    closePopup: closePopup,
+    editImageOverlay: editImageOverlay,
+    imagePreview: imagePreview,
+    image: image
   };
 })();
