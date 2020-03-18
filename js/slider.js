@@ -57,7 +57,9 @@
     effectPin.style.left = DEFAULT_EFFECT_VALUE + '%';
     effectDepth.style.width = DEFAULT_EFFECT_VALUE + '%';
     effectValue.value = DEFAULT_EFFECT_VALUE;
+    window.scale.controlValue.value = window.scale.DEFAULT_VALUE;
     image.style.filter = '';
+    image.style.transform = '';
   };
 
   // Выбор нужного эффекта (который соответствует классу изображения) и его параметров
