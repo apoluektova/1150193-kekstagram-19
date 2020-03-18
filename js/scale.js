@@ -50,13 +50,11 @@
     scaleImage();
   };
 
-  scaleValue.value = DEFAULT_SCALE_VALUE;
-
   scaleMinus.addEventListener('click', onScaleMinusClick);
   scalePlus.addEventListener('click', onScalePlusClick);
 
   window.scale = {
-    scaleValue: scaleValue,
-    DEFAULT_SCALE_VALUE: DEFAULT_SCALE_VALUE
+    controlValue: scaleValue,
+    DEFAULT_VALUE: DEFAULT_SCALE_VALUE
   };
 })();

@@ -52,6 +52,14 @@
     slider.classList.remove('hidden');
   };
 
+  // Сброс значений слайдера до дефолтных
+  var setDefaultSliderValues = function () {
+    effectPin.style.left = DEFAULT_EFFECT_VALUE + '%';
+    effectDepth.style.width = DEFAULT_EFFECT_VALUE + '%';
+    effectValue.value = DEFAULT_EFFECT_VALUE;
+    image.style.filter = '';
+  };
+
   // Выбор нужного эффекта (который соответствует классу изображения) и его параметров
   var findCurrentEffect = function () {
     var currentImageClass = image.className;
@@ -71,7 +79,6 @@
   var applyEffectDepth = function (pinValue) {
     var currentEffect = findCurrentEffect();
     var appliedFilter = effects[currentEffect];
-    console.log({ currentEffect, appliedFilter });
     image.style.filter = appliedFilter.filter + '(' + getEffectDepth(pinValue) + appliedFilter.units + ')';
   };
 
@@ -108,10 +115,9 @@
     window.addEventListener('mouseup', onMouseUp);
   });
 
-  hideSlider();
-
   window.slider = {
     hide: hideSlider,
-    show: showSlider
+    show: showSlider,
+    setDefault: setDefaultSliderValues
   };
 }());

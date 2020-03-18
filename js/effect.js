@@ -6,6 +6,7 @@
   var effectField = document.querySelector('.effects');
   var hideSlider = window.slider.hide;
   var showSlider = window.slider.show;
+  var setDefaultValues = window.slider.setDefault;
 
   // Обрезка строки с айди эффекта до подстроки с названием эффекта
   var getSubString = function (string) {
@@ -17,23 +18,44 @@
   var applyEffect = function (element) {
     var effectId = element.id;
     var effectName = getSubString(effectId);
+    if (element.id === 'effect-none') {
+      hideSlider();
+    } else {
+      showSlider();
+    }
+    setDefaultValues();
     image.classList = '';
     image.classList.add('effects__preview--' + effectName);
   };
 
+  // Удаление примененного ранее эффекта
+  var removeEffect = function () {
+    var currentEffect = image.className;
+    if (currentEffect.match('effects__preview--')) {
+      image.classList.remove(currentEffect);
+    }
+  };
+
   var onEffectChange = function (evt) {
+    removeEffect();
     applyEffect(evt.target);
-    evt.target.id === 'effect-none' 
-      ? hideSlider()
-      : showSlider()
   };
 
   // Переключение фильтров
-  effectField.addEventListener('click', onEffectChange);
+  var setEffectListeners = function () {
+    effectField.addEventListener('click', onEffectChange);
+  };
+
+  var removeEffectListeners = function () {
+    effectField.removeEventListener('click', onEffectChange);
+  };
 
   window.effect = {
     editImageForm: editImageForm,
     image: image,
-    getSubString: getSubString
+    getSubString: getSubString,
+    remove: removeEffect,
+    setListeners: setEffectListeners,
+    removeListeners: removeEffectListeners
   };
 })();
