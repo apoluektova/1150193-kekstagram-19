@@ -11,9 +11,6 @@
   var body = document.querySelector('body');
   var commentsList = document.querySelector('.social__comments');
   var commentElement = commentsList.querySelector('.social__comment');
-  // var createPhotos = window.data.createPhotos;
-  // var createComments = window.data.createComments;
-  // var createPhotosFragment = window.gallery.createPhotosFragment;
   var openPopup = window.util.openPopup;
   var onPopupEscPress = window.util.onPopupEscPress;
   var photosContainer = window.gallery.photosContainer;
@@ -47,7 +44,7 @@
   };
 
   // Обработчик загрузки комментариев
-  var onCommentsLoaderClick = function (evt) {
+  var onCommentsLoaderClick = function () {
     loadComments(commentsData);
     if (commentsData.length === 0) {
       commentsLoader.classList.add('hidden');
