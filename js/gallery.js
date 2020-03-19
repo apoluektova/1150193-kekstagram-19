@@ -29,13 +29,12 @@
       photoElement.setAttribute('picture-number', i);
       fragment.appendChild(photoElement);
     }
-    return fragment;
+    photosContainer.appendChild(fragment);
   };
 
   var onSuccess = function (data) {
     window.photosArray = data;
     createPhotosFragment(data);
-    console.log(createPhotosFragment(data));
   };
 
   var onError = function (errorMessage) {
