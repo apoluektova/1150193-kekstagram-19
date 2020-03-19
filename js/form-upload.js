@@ -51,5 +51,16 @@
     document.removeEventListener('keydown', onEditImageOverlayEscPress);
   };
 
+  // Обработчик отправки формы
+  var onFormSubmit = function (evt) {
+    evt.preventDefault();
+  };
+
   uploadFileInput.addEventListener('change', onEditImageOverlayOpen);
+  uploadForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(uploadForm), function (response) {
+      editImageOverlay.classList.add('hidden');
+    });
+    evt.preventDefault();
+  });
 }());

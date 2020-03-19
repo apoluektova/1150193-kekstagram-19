@@ -13,7 +13,7 @@
     SERVER_ERROR: 500
   };
 
-  window.load = function (onSuccess, onError) {
+  var load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
@@ -41,5 +41,9 @@
     xhr.timeout = TIMEOUT;
     xhr.open('GET', Url.GET);
     xhr.send();
+  };
+
+  window.backend = {
+    load: load
   };
 })();
