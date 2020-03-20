@@ -91,7 +91,7 @@
   };
 
   // Обработчик изменения фильтров
-  var onFilterClick = function (evt) {
+  var onFilterClick = window.debounce(function (evt) {
     changeActiveFilter(evt.target);
     removePhotos();
     switch (evt.target) {
@@ -107,7 +107,7 @@
       default:
         getDefaultPhotos();
     }
-  };
+  });
 
   imageFilters.addEventListener('click', onFilterClick);
 
