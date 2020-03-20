@@ -35,7 +35,7 @@
   };
 
   window.data = {
-    commentsArray: createComments(),
-    photoArray: createPhotoArray()
+    createComments: createComments,
+    createPhotos: createPhotoArray
   };
 })();

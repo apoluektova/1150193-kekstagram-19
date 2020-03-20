@@ -80,7 +80,7 @@
   };
 
   var checkComment = function () {
-    if (!commentInput.maxlength) {
+    if (commentInput.maxlength) {
       commentInput.setCustomValidity('Длина комментария не может составлять больше 140 символов');
     }
   };
