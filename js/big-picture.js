@@ -27,7 +27,6 @@
 
   // Создание фрагмента комментариев
   var addCommentsFragment = function (commentsArray) {
-    commentsList.innerHTML = '';
     var fragment = document.createDocumentFragment();
     commentsArray.forEach(function (comment) {
       var newComment = renderComment(comment);
@@ -56,6 +55,7 @@
   var renderBigPhoto = function (bigPhoto) {
     openPopup(bigPicture);
     body.classList.add('modal-open');
+    commentsList.innerHTML = '';
     bigPictureImage.src = bigPhoto.url;
     bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
     bigPicture.querySelector('.comments-count').textContent = bigPhoto.comments.length;
