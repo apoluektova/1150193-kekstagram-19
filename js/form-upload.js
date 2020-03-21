@@ -30,7 +30,7 @@
   };
 
   // Функция открытия окна редактирования
-  var onEditImageOverlayOpen = function () {
+  var openImageEditOverlay = function () {
     openPopup(editImageOverlay);
     body.classList.add('modal-open');
 
@@ -143,7 +143,9 @@
     onEditImageOverlayClose();
   };
 
-  uploadFileInput.addEventListener('change', onEditImageOverlayOpen);
+  var onUploadChange = openImageEditOverlay;
+
+  uploadFileInput.addEventListener('change', onUploadChange);
   uploadForm.addEventListener('submit', onFormSubmit);
 
   window.formUpload = {

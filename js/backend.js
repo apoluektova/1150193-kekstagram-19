@@ -17,21 +17,19 @@
   var checkRequestStatus = function (xhr, onSuccess, onError) {
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      if (xhr.readyState === READY_STATE_DONE) {
-        if (xhr.status === Code.SUCCESS) {
-          onSuccess(xhr.response);
-        } else {
-          switch (xhr.status) {
-            case Code.NOT_FOUND_ERROR:
-              onError('Ошибка 404: не найдено');
-              break;
-            case Code.SERVER_ERROR:
-              onError('Ошибка 500: ошибка сервера');
-              break;
-            default:
-              onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
-          }
-        }
+      if (xhr.readyState !== READY_STATE_DONE) {
+        return;
+      }
+      if (xhr.status === Code.SUCCESS) {
+        return onSuccess(xhr.response);
+      }
+      switch (xhr.status) {
+        case Code.NOT_FOUND_ERROR:
+          return onError('Ошибка 404: не найдено');
+        case Code.SERVER_ERROR:
+          return onError('Ошибка 500: ошибка сервера');
+        default:
+          onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
     xhr.addEventListener('error', function () {

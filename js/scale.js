@@ -13,26 +13,19 @@
 
   // Преобразование значения масштаба
   var getValue = function () {
-    var value = parseInt(scaleValue.value, RADIX);
-    return value;
+    return parseInt(scaleValue.value, RADIX);
   };
 
   // Уменьшение масштаба
   var decreaseScaleValue = function () {
-    if (getValue() > MIN_SCALE_VALUE && (getValue() - SCALE_STEP) > MIN_SCALE_VALUE) {
-      scaleValue.value = (getValue() - SCALE_STEP) + '%';
-    } else {
-      scaleValue.value = MIN_SCALE_VALUE + '%';
-    }
+    var next = getValue() - SCALE_STEP;
+    scaleValue.value = (next < MIN_SCALE_VALUE ? MIN_SCALE_VALUE : next) + '%';
   };
 
   // Увеличение масштаба
   var increaseScaleValue = function () {
-    if (getValue() < MAX_SCALE_VALUE && (getValue() + SCALE_STEP) < MAX_SCALE_VALUE) {
-      scaleValue.value = (getValue() + SCALE_STEP) + '%';
-    } else {
-      scaleValue.value = MAX_SCALE_VALUE + '%';
-    }
+    var next = getValue() + SCALE_STEP;
+    scaleValue.value = (next > MAX_SCALE_VALUE ? MIN_SCALE_VALUE : next) + '%';
   };
 
   // Масштабирование изображения
