@@ -66,6 +66,7 @@
     var photoArrayCopy = window.photosArray;
     var randomPhotos = shufflePhotosArray(photoArrayCopy).slice(0, RANDOM_PHOTOS);
     createPhotosFragment(randomPhotos);
+    window.filterPhotos = randomPhotos;
   };
 
   // Сортировка фотографий по количеству комментариев
