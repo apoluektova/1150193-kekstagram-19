@@ -1,4 +1,3 @@
-// модуль, который работает с формой редактирования изображения
 'use strict';
 
 (function () {
@@ -143,7 +142,10 @@
     onEditImageOverlayClose();
   };
 
-  var onUploadChange = openImageEditOverlay;
+  // Обработчик открытия окна редактирования
+  var onUploadChange = function () {
+    openImageEditOverlay();
+  };
 
   uploadFileInput.addEventListener('change', onUploadChange);
   uploadForm.addEventListener('submit', onFormSubmit);

@@ -69,8 +69,6 @@
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
     document.removeEventListener('keydown', onBigPictureEscPress);
-    // TODO: Убрать или раскомментировать
-    // bigPictureClose.removeEventListener('click', onBigPictureCancelClick);
   };
 
   // Функция закрытия окна полноразмерного изображения по Escape
@@ -106,7 +104,7 @@
   var onBigPictureOpenEnter = function (evt) {
     var focusedPicture = document.activeElement.classList.contains('picture');
     document.addEventListener('keydown', onBigPictureEscPress);
-    
+
     if (evt.key !== ENTER_KEY || !focusedPicture) {
       return;
     }

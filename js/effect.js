@@ -16,7 +16,11 @@
   var applyEffect = function (element) {
     var effectId = element.id;
     var effectName = getSubString(effectId);
-    element.id === 'effect-none' ? hideSlider() : showSlider()
+    if (element.id === 'effect-none') {
+      hideSlider();
+    } else {
+      showSlider();
+    }
 
     setDefaultValues();
     image.classList = '';
