@@ -10,7 +10,7 @@
   var effectValue = slider.querySelector('.effect-level__value');
   var image = window.util.image;
 
-  var effects = {
+  var Effects = {
     none: '',
     chrome: {
       filter: 'grayscale',
@@ -73,14 +73,14 @@
   var getEffectDepth = function (pinValue) {
     var currentEffect = findCurrentEffect();
     var proportionValue = pinValue / MAX_PERCENT_VALUE;
-    var effectDepthLevel = proportionValue * (effects[currentEffect].maxValue - effects[currentEffect].minValue) + effects[currentEffect].minValue;
+    var effectDepthLevel = proportionValue * (Effects[currentEffect].maxValue - Effects[currentEffect].minValue) + Effects[currentEffect].minValue;
     return effectDepthLevel;
   };
 
   // Применение глубины эффекта
   var applyEffectDepth = function (pinValue) {
     var currentEffect = findCurrentEffect();
-    var appliedFilter = effects[currentEffect];
+    var appliedFilter = Effects[currentEffect];
     image.style.filter = appliedFilter.filter + '(' + getEffectDepth(pinValue) + appliedFilter.units + ')';
   };
 

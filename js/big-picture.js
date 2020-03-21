@@ -69,6 +69,7 @@
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
     document.removeEventListener('keydown', onBigPictureEscPress);
+    // bigPictureClose.removeEventListener('click', onBigPictureCancelClick);
   };
 
   // Функция закрытия окна полноразмерного изображения по Escape
@@ -93,7 +94,7 @@
   var onBigPictureOpenClick = function (evt) {
     if (evt.target.parentNode.classList.contains('picture')) {
       var pictureNumber = evt.target.parentNode.getAttribute('picture-number');
-      var currentPicture = window.photosArray[pictureNumber];
+      var currentPicture = window.filterPhotos[pictureNumber];
       showBigPictureObject(currentPicture);
     }
     document.addEventListener('keydown', onBigPictureEscPress);
@@ -105,7 +106,7 @@
     var focusedPicture = document.activeElement.classList.contains('picture');
     if (evt.key === ENTER_KEY && focusedPicture) {
       var pictureNumber = document.activeElement.getAttribute('picture-number');
-      var currentPicture = window.photosArray[pictureNumber];
+      var currentPicture = window.filterPhotos[pictureNumber];
       showBigPictureObject(currentPicture);
     }
     document.addEventListener('keydown', onBigPictureEscPress);

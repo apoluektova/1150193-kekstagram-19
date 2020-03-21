@@ -9,7 +9,6 @@
   var defaultFilter = imageFilters.querySelector('#filter-default');
   var randomFilter = imageFilters.querySelector('#filter-random');
   var discussedFilter = imageFilters.querySelector('#filter-discussed');
-  // var createPhotos = window.data.createPhotos;
 
   // Отрисовка фотографий с описанием
   var renderPhotos = function (photoObject) {
@@ -85,9 +84,10 @@
 
   // Создание массива обсуждаемых фотографий
   var getDiscussedPhotos = function () {
-    var discussedPhotos = window.photosArray.slice();
-    sortPhotosByComments(discussedPhotos);
+    var photosArrayCopy = window.photosArray.slice();
+    var discussedPhotos = sortPhotosByComments(photosArrayCopy);
     createPhotosFragment(discussedPhotos);
+    window.filterPhotos = discussedPhotos;
   };
 
   // Обработчик изменения фильтров
@@ -113,6 +113,7 @@
 
   var onSuccess = function (data) {
     window.photosArray = data;
+    window.filterPhotos = data;
     createPhotosFragment(data);
     imageFilters.classList.remove('img-filters--inactive');
   };
