@@ -69,6 +69,7 @@
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
     document.removeEventListener('keydown', onBigPictureEscPress);
+    // TODO: Убрать или раскомментировать
     // bigPictureClose.removeEventListener('click', onBigPictureCancelClick);
   };
 
@@ -104,12 +105,15 @@
   // Обработчик нажатия по Enter на фотографию
   var onBigPictureOpenEnter = function (evt) {
     var focusedPicture = document.activeElement.classList.contains('picture');
-    if (evt.key === ENTER_KEY && focusedPicture) {
-      var pictureNumber = document.activeElement.getAttribute('picture-number');
-      var currentPicture = window.filterPhotos[pictureNumber];
-      showBigPictureObject(currentPicture);
-    }
     document.addEventListener('keydown', onBigPictureEscPress);
+    
+    if (evt.key !== ENTER_KEY || !focusedPicture) {
+      return;
+    }
+
+    var pictureNumber = document.activeElement.getAttribute('picture-number');
+    var currentPicture = window.filterPhotos[pictureNumber];
+    showBigPictureObject(currentPicture);
   };
 
   photosContainer.addEventListener('click', onBigPictureOpenClick);

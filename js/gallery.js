@@ -71,13 +71,7 @@
   // Сортировка фотографий по количеству комментариев
   var sortPhotosByComments = function (array) {
     array.sort(function (first, second) {
-      if (first.comments.length > second.comments.length) {
-        return -1;
-      } else if (first.comments.length < second.comments.length) {
-        return 1;
-      } else {
-        return 0;
-      }
+      return second.comments.length - first.comments.length
     });
     return array;
   };

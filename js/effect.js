@@ -9,19 +9,15 @@
 
   // Обрезка строки с айди эффекта до подстроки с названием эффекта
   var getSubString = function (string) {
-    var subString = string.substring(string.lastIndexOf('-') + 1);
-    return subString;
+    return string.substring(string.lastIndexOf('-') + 1);
   };
 
   // Добавление эффекта на фото
   var applyEffect = function (element) {
     var effectId = element.id;
     var effectName = getSubString(effectId);
-    if (element.id === 'effect-none') {
-      hideSlider();
-    } else {
-      showSlider();
-    }
+    element.id === 'effect-none' ? hideSlider() : showSlider()
+
     setDefaultValues();
     image.classList = '';
     image.classList.add('effects__preview--' + effectName);
