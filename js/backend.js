@@ -2,17 +2,17 @@
 
 
 (function () {
+  var TIMEOUT = 10000;
+  var READY_STATE_DONE = 4;
   var Url = {
     GET: 'https://js.dump.academy/kekstagram/data',
     SEND: 'https://js.dump.academy/kekstagram'
   };
-  var TIMEOUT = 10000;
   var Code = {
     SUCCESS: 200,
     NOT_FOUND_ERROR: 404,
     SERVER_ERROR: 500
   };
-  var READY_STATE_DONE = 4;
 
   var checkRequestStatus = function (xhr, onSuccess, onError) {
     xhr.responseType = 'json';

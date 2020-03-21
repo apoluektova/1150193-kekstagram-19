@@ -6,8 +6,6 @@
   var image = window.util.image;
   var effectField = window.effect.field;
   var effectsPreview = effectField.querySelectorAll('.effects__preview');
-  var createErrorMessage = window.formUpload.createErrorMessage;
-  var closeErrorMessage = window.formUpload.closeErrorMessage;
 
   uploadFileInput.addEventListener('change', function () {
     var file = uploadFileInput.files[0];
@@ -28,8 +26,6 @@
       });
 
       reader.readAsDataURL(file);
-    } else {
-      createErrorMessage();
     }
   });
 })();
