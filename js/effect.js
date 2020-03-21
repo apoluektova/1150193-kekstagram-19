@@ -54,6 +54,7 @@
     getSubString: getSubString,
     remove: removeEffect,
     setListeners: setEffectListeners,
-    removeListeners: removeEffectListeners
+    removeListeners: removeEffectListeners,
+    field: effectField
   };
 })();
