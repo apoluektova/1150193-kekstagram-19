@@ -12,32 +12,18 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // Функция закрытия окна по Escape
-  var onPopupEscPress = function (evt, action) {
+  // Закрытие окна по Escape
+  var isEscapeEvent = function (evt, action) {
     if (evt.key === ESC_KEY) {
       action();
     }
-  };
-
-  // Функция открытия любого окна
-  var openPopup = function (popup) {
-    popup.classList.remove('hidden');
-    document.addEventListener('keydown', onPopupEscPress);
-  };
-
-  // Функция закрытия любого окна
-  var closePopup = function (popup) {
-    popup.classList.add('hidden');
-    document.removeEventListener('keydown', onPopupEscPress);
   };
 
   window.util = {
     ESC_KEY: ESC_KEY,
     ENTER_KEY: ENTER_KEY,
     getRandomInteger: getRandomInteger,
-    onPopupEscPress: onPopupEscPress,
-    openPopup: openPopup,
-    closePopup: closePopup,
+    isEscapeEvent: isEscapeEvent,
     editImageOverlay: editImageOverlay,
     imagePreview: imagePreview,
     image: image

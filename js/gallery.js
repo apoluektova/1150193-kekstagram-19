@@ -63,7 +63,7 @@
 
   // Создание массива 10 случайных фотографий
   var getRandomPhotos = function () {
-    var photoArrayCopy = window.photosArray;
+    var photoArrayCopy = window.photosArray.slice();
     var randomPhotos = shufflePhotosArray(photoArrayCopy).slice(0, RANDOM_PHOTOS);
     createPhotosFragment(randomPhotos);
     window.filterPhotos = randomPhotos;

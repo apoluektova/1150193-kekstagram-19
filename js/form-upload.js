@@ -3,11 +3,9 @@
 (function () {
   var editImageOverlay = window.util.editImageOverlay;
   var uploadForm = document.querySelector('.img-upload__form');
-  var editImageOverlayClose = editImageOverlay.querySelector('#upload-cancel');
+  var editImageCloseButton = editImageOverlay.querySelector('#upload-cancel');
   var uploadFileInput = document.querySelector('#upload-file');
-  var openPopup = window.util.openPopup;
-  var closePopup = window.util.closePopup;
-  var onPopupEscPress = window.util.onPopupEscPress;
+  var isEscapeEvent = window.util.isEscapeEvent;
   var body = window.bigPicture.body;
   var hashtagInput = window.validation.hashtagInput;
   var commentInput = window.validation.commentInput;
@@ -24,13 +22,13 @@
   var onEditImageOverlayEscPress = function (evt) {
     var active = document.activeElement;
     if (hashtagInput !== active && commentInput !== active) {
-      onPopupEscPress(evt, onEditImageOverlayClose);
+      isEscapeEvent(evt, editImageOverlayClose);
     }
   };
 
   // Функция открытия окна редактирования
   var openImageEditOverlay = function () {
-    openPopup(editImageOverlay);
+    editImageOverlay.classList.remove('hidden');
     body.classList.add('modal-open');
 
     window.scale.controlValue.value = window.scale.DEFAULT_VALUE;
@@ -39,48 +37,23 @@
     setDefaultValues();
     setEffectListeners();
 
-    editImageOverlayClose.addEventListener('click', onEditImageOverlayClose);
+    editImageCloseButton.addEventListener('click', onEditImageOverlayClose);
     document.addEventListener('keydown', onEditImageOverlayEscPress);
   };
 
   // Функция закрытия окна редактирования
-  var onEditImageOverlayClose = function () {
-    closePopup(editImageOverlay);
+  var editImageOverlayClose = function () {
+    editImageOverlay.classList.add('hidden');
     body.classList.remove('modal-open');
     removeEffectListeners();
     uploadForm.reset();
-    editImageOverlayClose.removeEventListener('click', onEditImageOverlayClose);
+    editImageCloseButton.removeEventListener('click', onEditImageOverlayClose);
     document.removeEventListener('keydown', onEditImageOverlayEscPress);
   };
 
-  // Закрытие сообщения об отправке формы
-  var closeSuccessMessage = function () {
-    var successOverlay = document.querySelector('.success');
-    main.removeChild(successOverlay);
-    document.removeEventListener('keydown', onSuccessMessageEscPress);
-  };
-
-  // Обработчик закрытия сообщения об успешной отправке
-  var onSuccess = function () {
-    onEditImageOverlayClose();
-    createSuccessMessage();
-
-    var successOverlay = document.querySelector('.success');
-    var successMessageButton = successOverlay.querySelector('.success__button');
-    var successField = successOverlay.querySelector('.success__inner');
-
-    document.addEventListener('keydown', onSuccessMessageEscPress);
-    successMessageButton.addEventListener('click', closeSuccessMessage);
-    successOverlay.addEventListener('click', function (evt) {
-      if (evt.target !== successField) {
-        closeSuccessMessage();
-      }
-    });
-  };
-
-  // Обработчик закрытия сообщения об успехе по Escape
-  var onSuccessMessageEscPress = function (evt) {
-    onPopupEscPress(evt, closeSuccessMessage);
+  // Обработчик закрытия окна редактирования
+  var onEditImageOverlayClose = function () {
+    editImageOverlayClose();
   };
 
   // Создание сообщения об отправке формы
@@ -94,27 +67,67 @@
   // Создание сообщения об успешной отправке формы
   var createSuccessMessage = function () {
     createStatusMessage(successTemplate);
+  };
+
+  // Закрытие сообщения об успехе
+  var closeSuccessMessage = function () {
+    var successOverlay = document.querySelector('.success');
     var successMessageButton = document.querySelector('.success__button');
-    successMessageButton.addEventListener('click', onSuccess);
+    successMessageButton.removeEventListener('click', onSuccessMessageCloseClick);
+    document.removeEventListener('keydown', onSuccessMessageEscPress);
+    main.removeChild(successOverlay);
+  };
+
+  // Обработчик закрытия сообщения об успехе
+  var onSuccessMessageCloseClick = function () {
+    closeSuccessMessage();
+  };
+
+  // Обработчик закрытия успешной отправки формы
+  var onSuccess = function () {
+    editImageOverlayClose();
+    createSuccessMessage();
+
+    var successOverlay = document.querySelector('.success');
+    var successMessageButton = document.querySelector('.success__button');
+    var successField = successOverlay.querySelector('.success__inner');
+
+    document.addEventListener('keydown', onSuccessMessageEscPress);
+    successMessageButton.addEventListener('click', onSuccessMessageCloseClick);
+    successOverlay.addEventListener('click', function (evt) {
+      if (evt.target !== successField) {
+        closeSuccessMessage();
+      }
+    });
+  };
+
+  // Обработчик закрытия сообщения об успехе по Escape
+  var onSuccessMessageEscPress = function (evt) {
+    isEscapeEvent(evt, closeSuccessMessage);
   };
 
   // Создание сообщения об ошибке при отправке формы
   var createErrorMessage = function () {
     createStatusMessage(errorTemplate);
-    var errorMessageButton = document.querySelector('.error__button');
-    errorMessageButton.addEventListener('click', onError);
   };
 
   // Закрытие сообщения об ошибке при отправке
   var closeErrorMessage = function () {
     var errorOverlay = document.querySelector('.error');
-    main.removeChild(errorOverlay);
+    var errorMessageButton = document.querySelector('.error__button');
+    errorMessageButton.addEventListener('click', onErrorMessageCloseClick);
     document.removeEventListener('keydown', onErrorMessageEscPress);
+    main.removeChild(errorOverlay);
+  };
+
+  // Обработчик закрытия сообщения об ошибке
+  var onErrorMessageCloseClick = function () {
+    closeErrorMessage();
   };
 
   // Обработчик закрытия сообщения об ошибке по Escape
   var onErrorMessageEscPress = function (evt) {
-    onPopupEscPress(evt, closeErrorMessage);
+    isEscapeEvent(evt, closeErrorMessage);
   };
 
   // Обработчик закрытия сообщения об ошибке при отправке
@@ -127,7 +140,7 @@
     var errorField = errorOverlay.querySelector('.error__inner');
 
     document.addEventListener('keydown', onErrorMessageEscPress);
-    errorMessageButton.addEventListener('click', closeSuccessMessage);
+    errorMessageButton.addEventListener('click', onErrorMessageCloseClick);
     errorOverlay.addEventListener('click', function (evt) {
       if (evt.target !== errorField) {
         closeErrorMessage();
@@ -139,7 +152,7 @@
   var onFormSubmit = function (evt) {
     evt.preventDefault();
     window.backend.send(new FormData(uploadForm), onSuccess, onError);
-    onEditImageOverlayClose();
+    editImageOverlayClose();
   };
 
   // Обработчик открытия окна редактирования

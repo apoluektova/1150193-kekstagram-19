@@ -25,7 +25,7 @@
   // Увеличение масштаба
   var increaseScaleValue = function () {
     var next = getValue() + SCALE_STEP;
-    scaleValue.value = (next > MAX_SCALE_VALUE ? MIN_SCALE_VALUE : next) + '%';
+    scaleValue.value = (next > MAX_SCALE_VALUE ? MAX_SCALE_VALUE : next) + '%';
   };
 
   // Масштабирование изображения

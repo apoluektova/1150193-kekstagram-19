@@ -11,8 +11,7 @@
   var body = document.querySelector('body');
   var commentsList = document.querySelector('.social__comments');
   var commentElement = commentsList.querySelector('.social__comment');
-  var openPopup = window.util.openPopup;
-  var onPopupEscPress = window.util.onPopupEscPress;
+  var isEscapeEvent = window.util.isEscapeEvent;
   var photosContainer = window.gallery.photosContainer;
   var commentsData = [];
 
@@ -42,9 +41,15 @@
     commentsList.appendChild(commentsFragment);
   };
 
+  // Проверка текущего числа комментариев
+  var getCurrentCommentCount = function (comments) {
+    return comments ? comments.children.length : 0;
+  };
+
   // Обработчик загрузки комментариев
   var onCommentsLoaderClick = function () {
     loadComments(commentsData);
+    socialCommentCount.firstChild.textContent = getCurrentCommentCount(commentsList) + ' из ';
     if (commentsData.length === 0) {
       commentsLoader.classList.add('hidden');
       commentsLoader.removeEventListener('click', onCommentsLoaderClick);
@@ -53,7 +58,8 @@
 
   // Отрисовка полноразмерного изображения
   var renderBigPhoto = function (bigPhoto) {
-    openPopup(bigPicture);
+    bigPicture.classList.remove('hidden');
+    document.addEventListener('keydown', onBigPictureEscPress);
     body.classList.add('modal-open');
     commentsList.innerHTML = '';
     bigPictureImage.src = bigPhoto.url;
@@ -64,23 +70,31 @@
     return bigPicture;
   };
 
-  // Обработчик закрытия окна полноразмерного изображения
-  var onBigPictureCancelClick = function () {
+  // Закрытие окна полноразмерного изображения
+  var closeBigPicture = function () {
     bigPicture.classList.add('hidden');
     body.classList.remove('modal-open');
     document.removeEventListener('keydown', onBigPictureEscPress);
+    bigPictureClose.removeEventListener('click', onBigPictureCloseClick);
+  };
+
+  // Обработчик закрытия окна полноразмерного изображения
+  var onBigPictureCloseClick = function () {
+    closeBigPicture();
   };
 
   // Функция закрытия окна полноразмерного изображения по Escape
   var onBigPictureEscPress = function (evt) {
-    onPopupEscPress(evt, onBigPictureCancelClick);
+    isEscapeEvent(evt, closeBigPicture);
   };
 
   // Вывод полноразмерного изображения со списком комментариев
   var showBigPictureObject = function (pictureObject) {
     renderBigPhoto(pictureObject);
-    socialCommentCount.classList.add('hidden');
-
+    socialCommentCount.firstChild.textContent = MAX_COMMENT_NUMBER + ' из ';
+    if (pictureObject.comments.length <= MAX_COMMENT_NUMBER) {
+      socialCommentCount.firstChild.textContent = pictureObject.comments.length + ' из ';
+    }
     commentsData = pictureObject.comments.slice();
     if (pictureObject.comments.length > MAX_COMMENT_NUMBER) {
       commentsLoader.classList.remove('hidden');
@@ -97,6 +111,7 @@
       showBigPictureObject(currentPicture);
     }
     document.addEventListener('keydown', onBigPictureEscPress);
+    bigPictureClose.addEventListener('click', onBigPictureCloseClick);
   };
 
 
@@ -104,6 +119,7 @@
   var onBigPictureOpenEnter = function (evt) {
     var focusedPicture = document.activeElement.classList.contains('picture');
     document.addEventListener('keydown', onBigPictureEscPress);
+    bigPictureClose.addEventListener('click', onBigPictureCloseClick);
 
     if (evt.key !== ENTER_KEY || !focusedPicture) {
       return;
@@ -116,7 +132,6 @@
 
   photosContainer.addEventListener('click', onBigPictureOpenClick);
   photosContainer.addEventListener('keydown', onBigPictureOpenEnter);
-  bigPictureClose.addEventListener('click', onBigPictureCancelClick);
 
   window.bigPicture = {
     body: body
