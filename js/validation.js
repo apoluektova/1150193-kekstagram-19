@@ -82,12 +82,23 @@
   var checkComment = function () {
     if (commentInput.maxlength) {
       commentInput.setCustomValidity('Длина комментария не может составлять больше 140 символов');
+      commentInput.style.border = '2px solid red';
+    } else {
+      commentInput.setCustomValidity('');
+      commentInput.style.border = '';
     }
   };
 
   var onHashtagInput = function () {
     var errors = getErrorMessage();
-    hashtagInput.setCustomValidity(errors);
+    if (errors) {
+      hashtagInput.setCustomValidity(errors);
+      hashtagInput.style.border = '2px solid red';
+    } else {
+      hashtagInput.setCustomValidity('');
+      hashtagInput.style.border = '';
+    }
+
   };
 
   var onCommentInput = function () {

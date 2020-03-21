@@ -145,4 +145,10 @@
 
   uploadFileInput.addEventListener('change', onEditImageOverlayOpen);
   uploadForm.addEventListener('submit', onFormSubmit);
+
+  window.formUpload = {
+    fileInput: uploadFileInput,
+    createErrorMessage: createErrorMessage,
+    closeErrorMessage: closeErrorMessage
+  };
 }());
