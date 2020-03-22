@@ -3,8 +3,7 @@
 (function () {
   var image = window.util.image;
   var effectField = document.querySelector('.effects');
-  var hideSlider = window.slider.hide;
-  var showSlider = window.slider.show;
+  var setSliderVisibility = window.slider.setVisibility;
   var setDefaultValues = window.slider.setDefault;
 
   // Обрезка строки с айди эффекта до подстроки с названием эффекта
@@ -16,10 +15,7 @@
   var applyEffect = function (element) {
     var effectId = element.id;
     var effectName = getSubString(effectId);
-    showSlider();
-    if (effectId === 'effect-none') {
-      hideSlider();
-    }
+    setSliderVisibility(effectName);
     setDefaultValues();
     image.classList = '';
     image.classList.add('effects__preview--' + effectName);

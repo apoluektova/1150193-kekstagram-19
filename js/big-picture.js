@@ -96,11 +96,13 @@
       socialCommentCount.firstChild.textContent = pictureObject.comments.length + ' из ';
     }
     commentsData = pictureObject.comments.slice();
+    loadComments(commentsData);
     if (pictureObject.comments.length > MAX_COMMENT_NUMBER) {
       commentsLoader.classList.remove('hidden');
       commentsLoader.addEventListener('click', onCommentsLoaderClick);
+    } else {
+      commentsLoader.classList.add('hidden');
     }
-    loadComments(commentsData);
   };
 
   // Обработчик клика по списку фотографий

@@ -49,7 +49,18 @@
   };
 
   var showSlider = function () {
-    slider.classList.remove('hidden');
+    if (slider.classList.contains('hidden')) {
+      slider.classList.remove('hidden');
+    }
+  };
+
+  // Проверка отображения слайдера
+  var setSliderVisibility = function (effect) {
+    if (effect === 'none') {
+      hideSlider();
+    } else {
+      showSlider();
+    }
   };
 
   // Сброс значений слайдера до дефолтных
@@ -118,8 +129,9 @@
   });
 
   window.slider = {
-    hide: hideSlider,
     show: showSlider,
+    hide: hideSlider,
+    setVisibility: setSliderVisibility,
     setDefault: setDefaultSliderValues
   };
 }());

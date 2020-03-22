@@ -45,7 +45,10 @@
 
   // Отображение дефолтных фотографий
   var getDefaultPhotos = function () {
-    createPhotosFragment(window.photosArray);
+    var photosArrayCopy = window.photosArray.slice();
+    var defaultPhotos = photosArrayCopy;
+    createPhotosFragment(defaultPhotos);
+    window.filterPhotos = defaultPhotos;
   };
 
   // Функция перемешивания массива
